@@ -6,8 +6,7 @@
 
 <?php
 
-require("../models/database.php");  // provides connection for the database through PDO
-require("../models/product_db.php"); // 
+ // 
       
 // functions.php
 
@@ -23,13 +22,14 @@ function greet($name) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="../assets/styles.css" >
 </head>
 <body>
     <header>
         <?php require("./header.php");  ?>
     </header>
     <main>
-        <p> </p>
+        <p><?php require("./table.php"); ?> </p>
     </main>
     <footer>
         <?php require("./footer.php");?>
