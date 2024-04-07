@@ -29,7 +29,9 @@ function greet($name) {
         <?php require("./header.php");  ?>
     </header>
     <main>
+        <hr>
         <p><?php require("./table.php"); ?> </p>
+        <hr>
     </main>
     <footer>
         <?php require("./footer.php");?>

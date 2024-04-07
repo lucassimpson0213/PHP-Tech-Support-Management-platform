@@ -1,7 +1,10 @@
-<?php include '../view/header.php'; ?>
+
+<?php include './header.php'; ?>
+
+
 <main>
     <h1>Add Product</h1>
-    <form action="." method="post" id="aligned">
+    <form action="../index.php" method="post" id="aligned">
         <input type="hidden" name="action" value="add_product">
 
         <label>Code:</label>
@@ -23,4 +26,4 @@
     <p><a href="?action=list_products">View Product List</a></p>
 
 </main>
-<?php include '../view/footer.php'; ?>
+<?php include './footer.php'; ?>

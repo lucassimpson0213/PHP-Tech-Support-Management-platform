@@ -12,6 +12,7 @@ function list_products() {
         $table .= "<td>" . $product_details['name'] . "</td>";
         $table .= "<td>" . $product_details['version'] . "</td>";
         $table .= "<td>" . $product_details['releaseDate'] . "</td>";
+        $table .= "<td>" . "<button>Delete</button>" . "</td>";
         $table .= "</tr>";
     }
 
@@ -32,6 +33,7 @@ function list_products() {
     </style>
 </head>
 <body>
+
     <h1>Product List</h1>
     <table class="styled-table">
         <tr>
@@ -39,11 +41,13 @@ function list_products() {
             <th>Name</th>
             <th>Version</th>
             <th>Release Date</th>
+            <th></th>
         </tr>
         <?php 
-        list_products();
+         list_products();
         ?>
     </table>
+    <a href="./product_add.php">add product</a>
 </body>
 </html>
 
