@@ -36,18 +36,19 @@ function validate_string($code) { //validates the code that was in the switch st
 
 function validate_field($field) { //validates each of the individual fields to see if each of the fields are valid return true or false, based on each field using switch
 
-    switch($field) {
-        case 'code':
-            return 
+  //  switch($field) {
+    //    case 'code':
+     //       return 
 
-        case 'name':
+     //  case 'name':
 
-        case 'version':
+       // case 'version':
         
-        case 'release_date':
+        //case 'release_date':
         
-    }
-}
+    //}
+//}
+        }
 
 function santize_field($field) { // is going to santize the input i.e. take away any unwanted characters from input
     
@@ -73,4 +74,3 @@ filter_action();
 
 
 
-?>
