@@ -1,4 +1,4 @@
-/*import the header and footer files located in view folder
+<?php /*import the header and footer files located in view folder
  Recreate the center of the page displayed.
 2
 o When the user clicks the Delete button for a product, the
@@ -18,3 +18,6 @@ o When the user clicks the View Product List link, the
 the
 Product List page is displayed.
 */
+
+echo "You have successfully deleted the item from the database <br>
+    You can close this window.";
