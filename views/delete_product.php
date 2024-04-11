@@ -19,5 +19,7 @@ the
 Product List page is displayed.
 */
 
+print_r($_POST);
+
 echo "You have successfully deleted the item from the database <br>
     You can close this window.";

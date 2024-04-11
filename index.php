@@ -27,28 +27,50 @@ data. Check all fields and try again."
 print_r($_POST); //displays the _post superglobal variable when it has been populated
 print_r($_POST['action']);
 
-function validate_string($code) { //validates the code that was in the switch statement
+    $action = $_POST['action'];
+    echo gettype($_POST['action']);
 
-}
+
+    function validate_add_action($action) {
+
+    }
+
+    function validate_delete_action($action) {
+
+    }
+
+    function validate_show_add_form ($action) {
+
+    }                                     
+
+    function validate_list_products($action) {
+
+    }
+    if ($action == '') { 
+            echo 'Please input an action';
+            exit;
+        }
+
+    switch ($action) {
+
+       case 'add_product':
+        
+
+        case 'delete_product':
+            
+
+        case 'show_add_form':
+
+        case 'list_products':
+
+
+    }
+
+
 
 //also validates code name and version. 
+//validate and santitize
 
-
-function validate_field($field) { //validates each of the individual fields to see if each of the fields are valid return true or false, based on each field using switch
-
-  //  switch($field) {
-    //    case 'code':
-     //       return 
-
-     //  case 'name':
-
-       // case 'version':
-        
-        //case 'release_date':
-        
-    //}
-//}
-        }
 
 function santize_field($field) { // is going to santize the input i.e. take away any unwanted characters from input
     
