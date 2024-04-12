@@ -1,5 +1,5 @@
 
-<?php include './header.php'; ?>
+<?php include 'header.php'; ?>
 
 
 <main>
@@ -26,4 +26,4 @@
     <p><a href="?action=list_products">View Product List</a></p>
 
 </main>
-<?php include './footer.php'; ?>
+<?php include 'footer.php'; ?>

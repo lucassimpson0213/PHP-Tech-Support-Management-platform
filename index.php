@@ -1,70 +1,86 @@
-<?php /*
-    Within the index.php file, validate the data the user enters
-on the Add Product page to be sure that the user enters
-product code, name, version and release date. If this data
-isn’t provided, display an Error page that indicates that a
-required field was not entered.
-o Check action for list_products – import product_list
- Call get_products method from products_db
-located in the model folder
-o Check action for delete_product
- Filter input for product_code
- Call delete_product method
- Define the header
-o Check action for show_add_form
- Import product_add.php
-o Check action for add_product
- Filter input for code, name, version, release date
- Validate the input for empty-- "Invalid product
-data. Check all fields and try again."
- Import /errors/error.php
- If valid, call add_product method
- Define the header
-*/
- require('./models/database.php');
- require('./models/product_db.php');
+<?php
 
-print_r($_POST); //displays the _post superglobal variable when it has been populated
-print_r($_POST['action']);
-
-    $action = $_POST['action'];
-    echo gettype($_POST['action']);
+require('../model/database.php');
+require('../model/product_db.php');
 
 
-    function validate_add_action($action) {
 
-    }
 
-    function validate_delete_action($action) {
 
-    }
 
-    function validate_show_add_form ($action) {
 
-    }                                     
+function validate_add_action()
+{
+    $post_fields_empty =   (empty($_POST['code'])) || (empty($_POST['name'])) || (empty($_POST['version'])) || (empty($_POST['release_date']));
 
-    function validate_list_products($action) {
 
-    }
-    if ($action == '') { 
-            echo 'Please input an action';
-            exit;
+    if ($post_fields_empty) {
+        $error =  "invalid productdata. check all fields and try again";
+
+        include("./errors/error.php");
+    } else {
+        $code = filter_input(INPUT_POST, "code");
+        $name = filter_input(INPUT_POST, "name");
+        $version = filter_input(INPUT_POST, "version");
+        $release_date = filter_input(INPUT_POST, "release_date");
+
+        try {
+            add_product($code, $name, $version, $release_date);
+        } catch (PDOException $e) {
+            $error = "product add failed. Please try again";
+            include("./errors/error.php");
         }
-
-    switch ($action) {
-
-       case 'add_product':
-        
-
-        case 'delete_product':
-            
-
-        case 'show_add_form':
-
-        case 'list_products':
-
-
     }
+}
+
+
+function validate_delete_action()
+{
+    $product_code = filter_input(INPUT_POST, 'productCode');
+
+    try {
+        delete_product($product_code);
+        echo "Item deleted successfully!";
+        include('product_list.php');
+    } catch (PDOException $e) {
+
+        $error = "product was not deleted properly, please try again.";
+        include("./errors/error.php");
+    }
+}
+
+function validate_show_add_form()
+{
+
+    $filter_code = filter_input(INPUT_POST, "code");
+    include("./views/product_add.php");
+}
+
+function validate_list_products($action)
+{
+}
+
+print_r($_POST);
+$action = $_POST['action'];
+
+switch ($action) {
+
+    case 'add_product':
+        validate_add_action();
+        break;
+
+
+
+    case 'delete_product':
+        validate_delete_action();
+        break;
+
+
+
+    default:
+        $error = "under construction";
+        include("./errors/error.php");
+}
 
 
 
@@ -72,27 +88,23 @@ print_r($_POST['action']);
 //validate and santitize
 
 
-function santize_field($field) { // is going to santize the input i.e. take away any unwanted characters from input
-    
-}
-
-function filter_action() { //filters the post action to see if anything was posted
-
-    $action = filter_input(INPUT_POST, 'action');
-    if ($action === NULL) {
-        $action = filter_input(INPUT_GET, 'action');
-        if ($action === NULL) {
-            $action = 'under_construction';
-        }
-    }
-
-    if ($action == 'under_construction') {
-        include('../under_construction.php');
-    }
+function santize_field($field)
+{ // is going to santize the input i.e. take away any unwanted characters from input
 
 }
 
-filter_action();
-
-
-
+#function filter_action() { //filters the post action to see if anything was posted
+#
+#    $action = filter_input(INPUT_POST, 'action');
+#    if ($action === NULL) {
+#        $action = filter_input(INPUT_GET, 'action');
+#        if ($action === NULL) {
+#            $action = 'under_construction';
+#        }
+#    }
+#
+#    if ($action == 'under_construction') {
+#        include('../under_construction.php');
+#    }
+#
+#}
