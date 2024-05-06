@@ -1,7 +1,9 @@
 <?php
 
-require('../model/database.php');
-require('../model/product_db.php');
+require_once('../model/database.php');
+require_once('../model/product_db.php');
+require_once('../model/fields.php');
+require_once('../model/validate.php');
 
 
 
@@ -11,25 +13,51 @@ require('../model/product_db.php');
 
 function validate_add_action()
 {
-    $post_fields_empty =   (empty($_POST['code'])) || (empty($_POST['name'])) || (empty($_POST['version'])) || (empty($_POST['release_date']));
+    // Create a new instance of Validate
+    $validate = new Validate();
 
+    // Define an array of field names
+    $fieldNames = ['code', 'name', 'version', 'release_date'];
 
-    if ($post_fields_empty) {
-        $error =  "invalid productdata. check all fields and try again";
+    // Loop through each field name
+    foreach ($fieldNames as $fieldName) {
+        // Filter the input for the current field
+        $filteredValue = filter_input(INPUT_POST, $fieldName);
 
-        include("./errors/error.php");
-    } else {
-        $code = filter_input(INPUT_POST, "code");
-        $name = filter_input(INPUT_POST, "name");
-        $version = filter_input(INPUT_POST, "version");
-        $release_date = filter_input(INPUT_POST, "release_date");
+        // Add the field to the Validate instance
+        $validate->getFields()->addField($fieldName, $filteredValue);
 
-        try {
-            add_product($code, $name, $version, $release_date);
-        } catch (PDOException $e) {
-            $error = "product add failed. Please try again";
-            include("./errors/error.php");
+        // Validate the field
+        $validatedField = $validate->text($fieldName, $filteredValue);
+
+        // If the field has an error, include the error page and return
+        if ($validatedField->hasError()) {
+            include("../errors/error.php");
+            $error = "Product add failed. Please try again. Error at field: $fieldName";
+            return;
         }
+    }
+
+    // If all fields are valid, try to add the product
+    try {
+        add_product(
+            $validate->getFields()->getField('code')->getValue(),
+            $validate->getFields()->getField('name')->getValue(),
+            $validate->getFields()->getField('version')->getValue(),
+            $validate->getFields()->getField('release_date')->getValue()
+        );
+
+        // If the product was added successfully, include the product list and show an alert
+        include("product_list.php");
+        echo "<script>alert(`Product added Successfully!`)</script>";
+    } catch (PDOException $pdo_error) {
+        // If there was a database error, include the error page
+        $error = "Product add failed. Database error. Please try again";
+        include("../errors/error.php");
+    } catch(TypeError $type_error) {
+        // If there was a type error, include the error page
+        $error = "Product add failed. . Please try again";
+        include("../errors/error.php");
     }
 }
 
@@ -40,7 +68,8 @@ function validate_delete_action()
 
     try {
         delete_product($product_code);
-        echo "Item deleted successfully!";
+                    echo "<script>alert(`Product deleted Successfully!`)</script>";
+
         include('product_list.php');
     } catch (PDOException $e) {
 
@@ -56,12 +85,12 @@ function validate_show_add_form()
     include("./views/product_add.php");
 }
 
-function validate_list_products($action)
-{
-}
 
-print_r($_POST);
+
 $action = $_POST['action'];
+
+
+
 
 switch ($action) {
 
@@ -81,30 +110,3 @@ switch ($action) {
         $error = "under construction";
         include("./errors/error.php");
 }
-
-
-
-//also validates code name and version. 
-//validate and santitize
-
-
-function santize_field($field)
-{ // is going to santize the input i.e. take away any unwanted characters from input
-
-}
-
-#function filter_action() { //filters the post action to see if anything was posted
-#
-#    $action = filter_input(INPUT_POST, 'action');
-#    if ($action === NULL) {
-#        $action = filter_input(INPUT_GET, 'action');
-#        if ($action === NULL) {
-#            $action = 'under_construction';
-#        }
-#    }
-#
-#    if ($action == 'under_construction') {
-#        include('../under_construction.php');
-#    }
-#
-#}
